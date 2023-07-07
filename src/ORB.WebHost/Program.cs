@@ -2,10 +2,74 @@
 // Copyright (c) ORB. All rights reserved.
 // </copyright>
 
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using ORB.Data.Data;
+using ORB.Data.Models.Auth;
 using ORB.Services;
 using ORB.WebHost.SwaggerConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+// Entity Framework
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+   options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") !, o =>
+   {
+       o.MigrationsAssembly(typeof(Program).Assembly.FullName);
+       o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+   }));
+
+// For Identity
+builder.Services
+    .AddIdentity<User, IdentityRole>(options =>
+    {
+        /*options.SignIn.RequireConfirmedEmail = true;*/
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services
+    .AddLogging(conf =>
+    {
+        conf.ClearProviders();
+
+        // conf.AddSeq(configuration.GetSection("Seq"));
+        conf.AddConsole();
+    });
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"] !)),
+        };
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+        builder.WithOrigins("https://localhost:5173/", "http://localhost:5173/")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -16,15 +80,21 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
+app.UseSwagger();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
+app.UseCors();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
