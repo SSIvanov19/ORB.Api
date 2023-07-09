@@ -9,7 +9,7 @@ using ORB.Services.Contracts;
 namespace ORB.Services.Implementations;
 
 /// <summary>
-/// Current user.
+/// Class that implements <see cref="ICurrentUser"/>.
 /// </summary>
 internal class CurrentUser : ICurrentUser
 {

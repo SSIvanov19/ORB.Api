@@ -20,6 +20,10 @@ public static class DependencyInjection
     public static void AddServices(this IServiceCollection services)
     {
         services
-            .AddScoped<ICurrentUser, CurrentUser>();
+            .AddScoped<ICurrentUser, CurrentUser>()
+            .AddScoped<IAuthService, AuthService>()
+            .AddScoped<ITokenService, TokenService>()
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<IEmailService, EmailService>();
     }
 }

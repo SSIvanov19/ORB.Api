@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using ORB.Data.Data;
 using ORB.Data.Models.Auth;
 using ORB.Services;
+using ORB.WebHost.Models;
 using ORB.WebHost.SwaggerConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +79,8 @@ builder.Services.AddSwagger();
 builder.Services.AddServices();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -98,5 +101,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Logger.LogInformation("Starting the app.");
 
 app.Run();
