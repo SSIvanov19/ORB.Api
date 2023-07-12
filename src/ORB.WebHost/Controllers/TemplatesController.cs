@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ORB.Data.Data;
+using ORB.Data.Models.Resumes;
 
 namespace ORB.WebHost.Controllers
 {
@@ -8,28 +11,41 @@ namespace ORB.WebHost.Controllers
     public class TemplatesController : ControllerBase
     {
 
-        public static readonly List<Template> templates = new List<Template>()
-        {
-            new Template
-            {
-                Id = 1
-            },
-            new Template
-            {
-                Id = 2
-            }
-        };
+        private readonly ApplicationDbContext _context;
 
-        [HttpGet]
-
-        public ActionResult<IEnumerable<Template>> GetTemplates()
+        public TemplatesController(ApplicationDbContext context)
         {
-            return templates.ToList();
+            _context = context;
         }
 
-        public class Template
+       
+        [HttpGet]
+
+        public async Task<ActionResult<IEnumerable<Template>>> GetTemplates()
         {
-            public int Id { get; set; }
+            if (_context.Templates == null)
+            {
+                return NotFound();
+            }
+
+            return await _context.Templates.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Template>> GetTemplateById(string id)
+        {
+            if (_context.Templates == null)
+            {
+                return NotFound();
+            }
+            var template = await _context.Templates.FindAsync(id);
+
+            if (template == null)
+            {
+                return NotFound();
+            }
+
+            return template;
         }
 
 
