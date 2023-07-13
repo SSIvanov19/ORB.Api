@@ -3,51 +3,57 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
+using ORB.Services.Contracts;
+using ORB.Services.Implementations;
 
-namespace ORB.WebHost.Controllers
+namespace ORB.WebHost.Controllers;
+
+[Route("/[controller]")]
+[ApiController]
+public class TemplatesController : ControllerBase
 {
-    [Route("/[controller]")]
-    [ApiController]
-    public class TemplatesController : ControllerBase
+    private readonly ITemplateService templateService;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TemplatesController"/> class.
+    /// </summary>
+    /// <param name="templateService"></param>
+    public TemplatesController(ITemplateService templateService)
     {
+        this.templateService = templateService;
+    }
 
-        private readonly ApplicationDbContext _context;
-
-        public TemplatesController(ApplicationDbContext context)
+    /// <summary>
+    ///
+    /// </summary>
+    /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Template>>> GetTemplates()
+    {
+        var templates = await this.templateService.GetAllTemplatesAsync();
+        if (templates is null)
         {
-            _context = context;
+            return this.NotFound();
         }
 
-       
-        [HttpGet]
+        return this.Ok(templates);
+    }
 
-        public async Task<ActionResult<IEnumerable<Template>>> GetTemplates()
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Template>> GetTemplateById(string id)
+    {
+        var template = await this.templateService.FindTemplateByIdAsync(id);
+
+        if (template is null)
         {
-            if (_context.Templates == null)
-            {
-                return NotFound();
-            }
-
-            return await _context.Templates.ToListAsync();
+            return this.NotFound();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Template>> GetTemplateById(string id)
-        {
-            if (_context.Templates == null)
-            {
-                return NotFound();
-            }
-            var template = await _context.Templates.FindAsync(id);
-
-            if (template == null)
-            {
-                return NotFound();
-            }
-
-            return template;
-        }
-
-
+        return this.Ok(template);
     }
 }
