@@ -6,11 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using ORB.Services.Contracts;
 using ORB.Services.Implementations;
 
-namespace ORB.Services;
-
-/// <summary>
-/// Dependency Injection.
-/// </summary>
 public static class DependencyInjection
 {
     /// <summary>
@@ -27,5 +22,6 @@ public static class DependencyInjection
             .AddScoped<IEmailService, EmailService>()
             .AddScoped<IResumeService, ResumeService>()
             .AddScoped<IPersonalInfoService, PersonalInfoService>();
+            .AddScoped<ITemplateService, TemplateService>();
     }
 }

@@ -8,6 +8,7 @@ using ORB.Data.Models.Resumes;
 using ORB.Shared.Models.Auth.User;
 using ORB.Shared.Models.PersonalInfo;
 using ORB.Shared.Models.Resume;
+using ORB.Shared.Models.Templates;
 
 namespace ORB.WebHost.Models;
 
@@ -31,5 +32,7 @@ public class MappingProfile : Profile
         this.CreateMap<PersonalInfo, PersonalInfoVM>();
         this.CreateMap<PersonalInfoIM, PersonalInfo>();
 
+        this.CreateMap<Template, TemplateVM>();
+        this.CreateMap<TemplateVM, Template>();
     }
 }
