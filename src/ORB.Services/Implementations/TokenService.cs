@@ -228,7 +228,7 @@ public class TokenService : ITokenService
         }
 
         var token = new JwtSecurityToken(
-            expires: tokenType == TokenTypes.AccessToken ? DateTime.Now.AddMinutes(tokenValidity) : DateTime.Now.AddDays(tokenValidity),
+            expires: tokenType == TokenTypes.AccessToken ? DateTime.UtcNow.AddMinutes(tokenValidity) : DateTime.UtcNow.AddDays(tokenValidity),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 

@@ -1,109 +1,124 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// <copyright file="ResumesController.cs" company="ORB">
+// Copyright (c) ORB. All rights reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ORB.Services.Contracts;
+using ORB.Shared.Models.Resume;
 
-namespace ORB.WebHost.Controllers
+namespace ORB.WebHost.Controllers;
+
+/// <summary>
+/// Controller for resumes API end-points.
+/// </summary>
+[Authorize]
+[ApiController]
+[Route("api/[controller]")]
+public class ResumesController : ControllerBase
 {
-    [Route("/[controller]")]
-    [ApiController]
-    public class ResumesController : ControllerBase
+    private readonly IPersonalInfoService personalInfoService;
+    private readonly IResumeService resumeService;
+    private readonly ICurrentUser currentUser;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResumesController"/> class.
+    /// </summary>
+    /// <param name="personalInfoService">Personal info service.</param>
+    /// <param name="currentUser">Current user.</param>
+    /// <param name="resumeService">Resume service.</param>
+    public ResumesController(
+        IPersonalInfoService personalInfoService,
+        ICurrentUser currentUser,
+        IResumeService resumeService)
     {
+        this.personalInfoService = personalInfoService;
+        this.currentUser = currentUser;
+        this.resumeService = resumeService;
+    }
 
-        public static readonly List<Resume> _resumes = new List<Resume>()
+    /// <summary>
+    /// Endpoint for creating a new resume.
+    /// </summary>
+    /// <param name="resumeIM">Input model for the new resume.</param>
+    /// <returns>The created resume.</returns>
+    [HttpPost]
+    public async Task<ActionResult<ResumeVM>> CreateResumeAsync([FromBody] ResumeIM resumeIM)
+    {
+        // Check if there is template with the given id
+        /*
+        if (await this.templateService.GetTemplateByIdAsync(resume.TemplateId) is null)
         {
-            new Resume
-            {   Id = 1,
-                Name = "Ivan Peshev",
-                Age = 25,
-                Education = "Bachelor's Degree in Computer Science",
-                Languages = new[] { "English","Bulgarian", "Korean"}
-            },
-            new Resume
-            {   Id=2,
-                Name ="Yoan Genchev",
-                Age = 27,
-                Education = "Bachelor's Degree in Neuroscience",
-                Languages = new[] { "Bulgarian", "Dutch", "English"}
-            }
-        };
+            return this.BadRequest();
+        }
+        */
 
-        // GET: /resumes
-        [HttpGet]
-        public ActionResult<IEnumerable<Resume>> GetResume()
+        var personalInfo = await this.personalInfoService
+                                        .CreateDefaultPersonalInfoForUserWithIdAsync(this.currentUser.UserId);
+
+        var resume = await this.resumeService.CreateResumeAsync(resumeIM, personalInfo.Id, this.currentUser.UserId);
+
+        return this.Ok(resume);
+    }
+
+    /// <summary>
+    /// Endpoint for getting all resumes of the current user.
+    /// </summary>
+    /// <returns>List of resumes of the current user.</returns>
+    [HttpGet]
+    public async Task<ActionResult<List<ResumeVM>>> GetAllResumesForCurrentUserAsync()
+    {
+        var resumes = await this.resumeService.GetAllResumesForUserWithIdAsync(this.currentUser.UserId);
+
+        return this.Ok(resumes);
+    }
+
+    /// <summary>
+    /// Endpoint for getting a specific resume by its id.
+    /// </summary>
+    /// <param name="id">Id of the resume to retrieve.</param>
+    /// <returns>The requested resume.</returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ResumeVM>> GetResumeByIdAsync(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
         {
-            List<Resume> resumes = _resumes.ToList();
-            return resumes;
+            return this.NotFound();
         }
 
-
-        // GET: /resumes/2
-        [HttpGet("{id}")]
-        public ActionResult<Resume> GetResumeById(int id)
+        if (resume.UserId != this.currentUser.UserId)
         {
-            var resume = _resumes.Find(r => r.Id == id);
-            if (resume == null)
-            {
-                return NotFound();
-            }
-            return Ok(resume);
+            return this.Unauthorized();
         }
 
-        //POST: /resumes
-        [HttpPost]
-        public ActionResult<Resume> PostResume(Resume resume)
+        return this.Ok(resume);
+    }
+
+    /// <summary>
+    /// Update a resume by its id.
+    /// </summary>
+    /// <param name="id">Id of the resume to update.</param>
+    /// <param name="newResumeInfo">Updated information of the resume.</param>
+    /// <returns>The updated resume.</returns>
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ResumeVM>> UpdateResumeWithIdAsync(string id, [FromBody] ResumeIM newResumeInfo)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
         {
-            //add additional validation
-            resume.Id = _resumes.Count + 1;
-            _resumes.Add(resume);
-            return CreatedAtAction(nameof(GetResumeById),
-                new { id = resume.Id }, resume);
+            return this.NotFound();
         }
 
-        //PUT: /resumes/2
-        [HttpPut("{id}")]
-        public IActionResult PutResume(int id, Resume updatedResume)
+        if (resume.UserId != this.currentUser.UserId)
         {
-            var existingResume = _resumes.Find(r => r.Id == id);
-            if (existingResume == null)
-            {
-                return NotFound();
-            }
-
-            existingResume.Name = updatedResume.Name;
-            existingResume.Age = updatedResume.Age;
-            existingResume.Education = updatedResume.Education;
-            existingResume.Languages = updatedResume.Languages;
-
-            return NoContent();
+            return this.Unauthorized();
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult<Resume> DeleteResume(int id)
-        {
-            var resumeToRemove = _resumes.Find(r => r.Id == id);
-            if (resumeToRemove == null)
-            {
-                return NotFound();
-            }
+        resume = await this.resumeService.UpdateResumeInfoWithIdAsync(id, newResumeInfo);
 
-            _resumes.Remove(resumeToRemove);
-            return NoContent();
-        }
-
-
-        public class Resume
-        {
-            public int Id { get; set; }
-
-            public string Name { get; set; }
-
-            public int Age { get; set; }
-
-            public string? Education { get; set; }
-
-            public string[] Languages { get; set; }
-
-
-        }
-
+        return this.Ok(resume);
     }
 }
