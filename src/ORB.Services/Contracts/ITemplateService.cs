@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using ORB.Data.Models.Resumes;
 using ORB.Shared.Models.Templates;
 
-namespace ORB.Services.Contracts
-{
+namespace ORB.Services.Contracts;
+
     public interface ITemplateService
     {
-        Task<IEnumerable<TemplateVM>> GetAllTemplatesAsync();
+        Task<IEnumerable<TemplateVM>?> GetAllTemplatesAsync();
 
-        Task<TemplateVM> FindTemplateByIdAsync(string id);
+        Task<TemplateVM?> FindTemplateByIdAsync(string id);
     }
-}

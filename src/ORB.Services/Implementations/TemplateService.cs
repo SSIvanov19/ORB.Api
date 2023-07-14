@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Shared.Models.Templates;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace ORB.Services.Implementations
-{
+namespace ORB.Services.Implementations;
+
     public class TemplateService : ITemplateService
     {
         private readonly ApplicationDbContext context;
@@ -20,19 +20,20 @@ namespace ORB.Services.Implementations
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<TemplateVM>> GetAllTemplatesAsync()
+        /// <inheritdoc/>
+        public async Task<IEnumerable<TemplateVM>?> GetAllTemplatesAsync()
         {
             var templates = await this.context.Templates.ToListAsync();
-            if(templates is null)
+            if (templates is null)
             {
-                return null;
+            return null;
             }
 
             return this.mapper.Map<List<TemplateVM>>(templates);
         }
 
         /// <inheritdoc/>
-        public async Task<TemplateVM> FindTemplateByIdAsync(string id)
+        public async Task<TemplateVM?> FindTemplateByIdAsync(string id)
         {
             var template = await this.context.Templates.FindAsync(id);
             if (template is null)
@@ -43,4 +44,3 @@ namespace ORB.Services.Implementations
             return this.mapper.Map<TemplateVM>(template);
         }
     }
-}

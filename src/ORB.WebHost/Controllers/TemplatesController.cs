@@ -5,10 +5,11 @@ using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Services.Implementations;
+using ORB.Shared.Models.Templates;
 
 namespace ORB.WebHost.Controllers;
 
-[Route("/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class TemplatesController : ControllerBase
 {
@@ -28,7 +29,7 @@ public class TemplatesController : ControllerBase
     /// </summary>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Template>>> GetTemplates()
+    public async Task<ActionResult<IEnumerable<TemplateVM>>> GetTemplates()
     {
         var templates = await this.templateService.GetAllTemplatesAsync();
         if (templates is null)
@@ -45,7 +46,7 @@ public class TemplatesController : ControllerBase
     /// <param name="id"></param>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
     [HttpGet("{id}")]
-    public async Task<ActionResult<Template>> GetTemplateById(string id)
+    public async Task<ActionResult<TemplateVM>> GetTemplateById(string id)
     {
         var template = await this.templateService.FindTemplateByIdAsync(id);
 

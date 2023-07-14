@@ -22,8 +22,7 @@ public class MappingProfile : Profile
     {
         this.CreateMap<User, UserVM>();
         this.CreateMap<UserUM, UserIM>();
-        this.CreateMap<Template, TemplateVM>();
-        this.CreateMap<TemplateVM, Template>(); //look if this needs to stay here
-
+        //this.CreateMap<Template, TemplateVM>();
+        //this.CreateMap<TemplateVM, Template>();
     }
 }
