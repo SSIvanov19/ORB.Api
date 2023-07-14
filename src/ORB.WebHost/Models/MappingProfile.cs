@@ -4,7 +4,9 @@
 
 using AutoMapper;
 using ORB.Data.Models.Auth;
+using ORB.Data.Models.Resumes;
 using ORB.Shared.Models.Auth.User;
+using ORB.Shared.Models.Templates;
 
 namespace ORB.WebHost.Models;
 
@@ -20,5 +22,7 @@ public class MappingProfile : Profile
     {
         this.CreateMap<User, UserVM>();
         this.CreateMap<UserUM, UserIM>();
+        this.CreateMap<Template, TemplateVM>();
+        this.CreateMap<TemplateVM, Template>();
     }
 }
