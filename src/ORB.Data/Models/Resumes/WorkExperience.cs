@@ -46,7 +46,7 @@ public class WorkExperience
     /// Gets or sets the start date of the work experience.
     /// </summary>
     [Required]
-    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
     /// <summary>
     /// Gets or sets the end date of the work experience (if any).

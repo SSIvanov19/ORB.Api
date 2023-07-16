@@ -20,6 +20,8 @@ public static class DependencyInjection
             .AddScoped<ITokenService, TokenService>()
             .AddScoped<IUserService, UserService>()
             .AddScoped<IEmailService, EmailService>()
+            .AddScoped<IResumeService, ResumeService>()
+            .AddScoped<IPersonalInfoService, PersonalInfoService>();
             .AddScoped<ITemplateService, TemplateService>();
     }
 }

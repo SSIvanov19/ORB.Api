@@ -52,7 +52,7 @@ public class Education
     /// Gets or sets the date education started.
     /// </summary>
     [Required]
-    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
     /// <summary>
     /// Gets or sets the date education ended.
