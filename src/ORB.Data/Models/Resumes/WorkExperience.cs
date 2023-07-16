@@ -57,5 +57,5 @@ public class WorkExperience
     /// Gets or sets the related resume to this work experience.
     /// </summary>
     [ForeignKey(nameof(ResumeId))]
-    public Resume Resume { get; set; } = new ();
+    public Resume Resume { get; set; }
 }

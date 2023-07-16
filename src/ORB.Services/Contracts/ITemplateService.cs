@@ -1,16 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ORB.Data.Models.Resumes;
+﻿// <copyright file="ITemplateService.cs" company="ORB">
+// Copyright (c) ORB. All rights reserved.
+// </copyright>
+
 using ORB.Shared.Models.Templates;
 
 namespace ORB.Services.Contracts;
 
-    public interface ITemplateService
-    {
-        Task<IEnumerable<TemplateVM>?> GetAllTemplatesAsync();
+/// <summary>
+/// Interface for the Template Service
+/// </summary>
+public interface ITemplateService
+{
+    /// <summary>
+    /// Returns all templates.
+    /// </summary>
+    /// <returns>Collection of TemplateVM</returns>
+    Task<IEnumerable<TemplateVM>?> GetAllTemplatesAsync();
 
-        Task<TemplateVM?> FindTemplateByIdAsync(string id);
-    }
+    /// <summary>
+    /// Finds a template based on the provided ID.
+    /// </summary>
+    /// <param name="id">ID of template to find.</param>
+    /// <returns>Template with provided ID.</returns>
+    Task<TemplateVM?> FindTemplateByIdAsync(string id);
+}

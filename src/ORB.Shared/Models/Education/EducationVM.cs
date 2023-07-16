@@ -1,16 +1,13 @@
-﻿// <copyright file="Education.cs" company="ORB">
+﻿// <copyright file="EducationVM.cs" company="ORB">
 // Copyright (c) ORB. All rights reserved.
 // </copyright>
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ORB.Data.Models.Resumes;
+namespace ORB.Shared.Models.Education;
 
-/// <summary>
-/// Represents education of a person in a resume.
-/// </summary>
-public class Education
+public class EducationVM
 {
     /// <summary>
     /// Gets or sets identifier of education.
@@ -58,10 +55,4 @@ public class Education
     /// Gets or sets the date education ended.
     /// </summary>
     public DateOnly? EndDate { get; set; }
-
-    /// <summary>
-    /// Gets or sets resume object this education is linked to.
-    /// </summary>
-    [ForeignKey(nameof(ResumeId))]
-    public Resume Resume { get; set; }
 }
