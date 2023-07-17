@@ -2,6 +2,7 @@
 // Copyright (c) ORB. All rights reserved.
 // </copyright>
 
+using ORB.Shared.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace ORB.Shared.Models.Education;
@@ -41,11 +42,14 @@ public class EducationIM
     /// <summary>
     /// Gets or sets the date education started.
     /// </summary>
+    [DateOnly]
     [Required]
     public string StartDate { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the date education ended.
     /// </summary>
+    [DateOnly]
+    [GreaterThan(nameof(StartDate))]
     public string? EndDate { get; set; }
 }
