@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ORB.Data.Data;
-using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
-using ORB.Services.Implementations;
 using ORB.Shared.Models.Templates;
 
 namespace ORB.WebHost.Controllers;
 
-[Route("api/[controller]")]
+/// <summary>
+/// Templates controller used to manage templates.
+/// </summary>
+[Authorize]
 [ApiController]
+[Route("api/[controller]")]
 public class TemplatesController : ControllerBase
 {
     private readonly ITemplateService templateService;
@@ -18,14 +18,14 @@ public class TemplatesController : ControllerBase
     /// <summary>
     /// Initializes a new instance of the <see cref="TemplatesController"/> class.
     /// </summary>
-    /// <param name="templateService"></param>
+    /// <param name="templateService">Template service.</param>
     public TemplatesController(ITemplateService templateService)
     {
         this.templateService = templateService;
     }
 
     /// <summary>
-    ///
+    /// Get all available templates.
     /// </summary>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
     [HttpGet]
@@ -41,7 +41,7 @@ public class TemplatesController : ControllerBase
     }
 
     /// <summary>
-    ///
+    /// Get a template by id.
     /// </summary>
     /// <param name="id"></param>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
