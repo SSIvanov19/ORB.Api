@@ -1,4 +1,4 @@
-﻿// <copyright file="WorkExperienceIM.cs" company="ORB">
+﻿// <copyright file="WorkExperienceUM.cs" company="ORB">
 // Copyright (c) ORB. All rights reserved.
 // </copyright>
 
@@ -8,16 +8,10 @@ using ORB.Shared.DataAnnotations;
 namespace ORB.Shared.Models.WorkExperience;
 
 /// <summary>
-/// Represents an input model for work experience for a resume.
+/// Represents update model for work experience for a resume.
 /// </summary>
-public class WorkExperienceIM
+public class WorkExperienceUM
 {
-    /// <summary>
-    /// Gets or sets the ID reference to the resume this work experience belongs to.
-    /// </summary>
-    [Required]
-    public string ResumeId { get; set; } = string.Empty;
-
     /// <summary>
     /// Gets or sets the name of the company.
     /// </summary>

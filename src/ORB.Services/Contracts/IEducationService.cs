@@ -16,7 +16,7 @@ public interface IEducationService
     /// </summary>
     /// <param name="educationModel">Model with all information needed to create a new education item.</param>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation. The task result contains the created <see cref="EducationVM"/>.</returns>
-    Task<EducationVM> CreateResumeAsync(EducationIM educationModel);
+    Task<EducationVM> CreateEducationInfoAsync(EducationIM educationModel);
 
     /// <summary>
     /// Delete an education item by its id.

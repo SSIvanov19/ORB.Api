@@ -1,17 +1,22 @@
-﻿// <copyright file="WorkExperienceIM.cs" company="ORB">
+﻿// <copyright file="WorkExperienceVM.cs" company="ORB">
 // Copyright (c) ORB. All rights reserved.
 // </copyright>
 
 using System.ComponentModel.DataAnnotations;
-using ORB.Shared.DataAnnotations;
 
 namespace ORB.Shared.Models.WorkExperience;
 
 /// <summary>
-/// Represents an input model for work experience for a resume.
+/// Represents a view model for work experience for a resume.
 /// </summary>
-public class WorkExperienceIM
+public class WorkExperienceVM
 {
+    /// <summary>
+    /// Gets or sets the unique identifier for the work experience.
+    /// </summary>
+    [Required]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+
     /// <summary>
     /// Gets or sets the ID reference to the resume this work experience belongs to.
     /// </summary>
@@ -40,13 +45,10 @@ public class WorkExperienceIM
     /// Gets or sets the start date of the work experience.
     /// </summary>
     [Required]
-    [DateOnly]
-    public string StartDate { get; set; } = string.Empty;
+    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
     /// <summary>
     /// Gets or sets the end date of the work experience (if any).
     /// </summary>
-    [DateOnly]
-    [GreaterThan(nameof(StartDate))]
-    public string? EndDate { get; set; }
+    public DateOnly? EndDate { get; set; }
 }

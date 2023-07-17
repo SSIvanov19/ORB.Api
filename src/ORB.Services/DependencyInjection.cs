@@ -23,6 +23,7 @@ public static class DependencyInjection
             .AddScoped<IResumeService, ResumeService>()
             .AddScoped<IPersonalInfoService, PersonalInfoService>()
             .AddScoped<ITemplateService, TemplateService>()
-            .AddScoped<IEducationService, EducationService>();
+            .AddScoped<IEducationService, EducationService>()
+            .AddScoped<IWorkExperienceService, WorkExperienceService>();
     }
 }
