@@ -11,6 +11,9 @@ using ORB.Shared.Models.Education;
 
 namespace ORB.Services.Implementations;
 
+/// <summary>
+/// Service implementing the <see cref="IEducationService"/> interface.
+/// </summary>
 internal class EducationService : IEducationService
 {
     private readonly ApplicationDbContext context;
@@ -28,7 +31,7 @@ internal class EducationService : IEducationService
     }
 
     /// <inheritdoc/>
-    public async Task<EducationVM> CreateResumeAsync(EducationIM educationModel)
+    public async Task<EducationVM> CreateEducationInfoAsync(EducationIM educationModel)
     {
         var education = this.mapper.Map<Education>(educationModel);
 

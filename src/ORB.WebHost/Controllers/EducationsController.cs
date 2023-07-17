@@ -22,7 +22,7 @@ public class EducationsController : ControllerBase
     /// </summary>
     /// <param name="currentUser">Current user.</param>
     /// <param name="resumeService">Resume service.</param>
-    /// <param name="educationService">Education resume.</param>
+    /// <param name="educationService">Education service.</param>
     public EducationsController(
         ICurrentUser currentUser,
         IResumeService resumeService,
@@ -53,7 +53,7 @@ public class EducationsController : ControllerBase
             return this.Forbid("User doesn't have access to this resume!");
         }
 
-        var education = await this.educationService.CreateResumeAsync(educationModel);
+        var education = await this.educationService.CreateEducationInfoAsync(educationModel);
 
         return this.Ok(education);
     }
