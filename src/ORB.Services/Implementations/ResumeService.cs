@@ -48,10 +48,29 @@ internal class ResumeService : IResumeService
     }
 
     /// <inheritdoc/>
+    public async Task DeleteResumeAsync(string id)
+    {
+        var resume = await this.context.Resumes.FindAsync(id);
+
+        resume!.IsDeleted = true;
+
+        await this.context.SaveChangesAsync();
+    }
+
+    /// <inheritdoc/>
     public async Task<List<ResumeVM>> GetAllResumesForUserWithIdAsync(string userId)
     {
         return await this.context.Resumes
-                            .Where(r => r.UserId == userId)
+                            .Where(r => r.UserId == userId && !r.IsDeleted)
+                            .ProjectTo<ResumeVM>(this.mapper.ConfigurationProvider)
+                            .ToListAsync();
+    }
+
+    /// <inheritdoc/>
+    public async Task<List<ResumeVM>> GetAllDeletedResumesForUserWithIdAsync(string userId)
+    {
+        return await this.context.Resumes
+                            .Where(r => r.UserId == userId && r.IsDeleted)
                             .ProjectTo<ResumeVM>(this.mapper.ConfigurationProvider)
                             .ToListAsync();
     }
@@ -78,5 +97,15 @@ internal class ResumeService : IResumeService
         await this.context.SaveChangesAsync();
 
         return this.mapper.Map<ResumeVM>(resume);
+    }
+
+    /// <inheritdoc/>
+    public async Task RecoverResumeAsync(string id)
+    {
+        var resume = await this.context.Resumes.FindAsync(id);
+
+        resume!.IsDeleted = false;
+
+        await this.context.SaveChangesAsync();
     }
 }

@@ -53,7 +53,7 @@ internal class PersonalInfoService : IPersonalInfoService
     public async Task<PersonalInfoVM?> GetPersonalInfoByIdAsync(string id, string userId)
     {
         var personalInfo = await this.context.Resumes
-                                                .Where(r => r.PersonalInfoId == id && r.UserId == userId)
+                                                .Where(r => r.PersonalInfoId == id && r.UserId == userId && !r.IsDeleted)
                                                 .Include(r => r.PersonalInfo)
                                                 .Select(r => r.PersonalInfo)
                                                 .FirstOrDefaultAsync();

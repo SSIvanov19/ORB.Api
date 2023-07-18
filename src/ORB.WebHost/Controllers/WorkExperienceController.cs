@@ -43,7 +43,7 @@ public class WorkExperienceController : ControllerBase
     /// <param name="workExperienceModel">The model containing the information for the work experience.</param>
     /// <returns>The newly created work experience.</returns>
     [HttpPost]
-    public async Task<ActionResult<WorkExperienceVM>> CreateWorkEperienceAsync(WorkExperienceIM workExperienceModel)
+    public async Task<ActionResult<WorkExperienceVM>> CreateWorkExperienceAsync(WorkExperienceIM workExperienceModel)
     {
         var resume = await this.resumeService.GetResumeByIdAsync(workExperienceModel.ResumeId);
 
@@ -55,6 +55,11 @@ public class WorkExperienceController : ControllerBase
         if (resume.UserId != this.currentUser.UserId)
         {
             return this.Forbid("User doesn't have access to this resume!");
+        }
+
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest("This resume is deleted and you can't add work experience to it!");
         }
 
         var workExperience = await this.workExperienceService.CreateWorkExperienceAsync(workExperienceModel);

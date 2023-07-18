@@ -53,6 +53,11 @@ public class EducationsController : ControllerBase
             return this.Forbid("User doesn't have access to this resume!");
         }
 
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest("Resume is deleted!");
+        }
+
         var education = await this.educationService.CreateEducationInfoAsync(educationModel);
 
         return this.Ok(education);

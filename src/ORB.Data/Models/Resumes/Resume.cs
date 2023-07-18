@@ -54,6 +54,12 @@ public class Resume
     public string? TemplateId { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the Resume is deleted.
+    /// </summary>
+    [Required]
+    public bool IsDeleted { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the User model associated with the Resume.
     /// </summary>
     [ForeignKey(nameof(UserId))]
