@@ -21,7 +21,7 @@ public class UserVM
     /// </summary>
     [Display(Name = "First name")]
     [Required(ErrorMessage = "First name is required")]
-    [RegularExpression("^(?=.*[A-ZА-Яа-яa-z])([A-ZА-Я])([a-zа-я]{2,29})+(?<![_.])$", ErrorMessage = "Last name is not valid")]
+    [RegularExpression("^(?=.*[A-ZА-Яа-яa-z])([A-ZА-Я])([a-zа-я]{2,29})+(?<![_.])$", ErrorMessage = "First name is not valid")]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
