@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ORB.Data.Models.Resumes;
 
@@ -48,4 +49,10 @@ public class PersonalInfo
     /// </summary>
     [Required]
     public string Summary { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the URL of person's image.
+    /// </summary>
+    [AllowNull]
+    public string? PersonImageURL { get; set; } = null;
 }

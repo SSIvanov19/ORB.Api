@@ -8,7 +8,6 @@ using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Shared.Models.PersonalInfo;
-using ORB.Shared.Models.Resume;
 
 namespace ORB.Services.Implementations;
 
@@ -20,6 +19,7 @@ internal class PersonalInfoService : IPersonalInfoService
     private readonly ApplicationDbContext context;
     private readonly IUserService userService;
     private readonly IMapper mapper;
+    private readonly IFileService fileService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PersonalInfoService"/> class.
@@ -27,11 +27,17 @@ internal class PersonalInfoService : IPersonalInfoService
     /// <param name="context">The database context.</param>
     /// <param name="userService">An instance of IUserService.</param>
     /// <param name="mapper">An instance of IMapper.</param>
-    public PersonalInfoService(ApplicationDbContext context, IUserService userService, IMapper mapper)
+    /// <param name="fileService">An instance of file service.</param>
+    public PersonalInfoService(
+        ApplicationDbContext context,
+        IUserService userService,
+        IMapper mapper,
+        IFileService fileService)
     {
         this.context = context;
         this.userService = userService;
         this.mapper = mapper;
+        this.fileService = fileService;
     }
 
     /// <inheritdoc/>
@@ -73,6 +79,15 @@ internal class PersonalInfoService : IPersonalInfoService
         personalInfo.PhoneNumber = newPersonalInfo.PhoneNumber;
         personalInfo.Email = newPersonalInfo.Email;
         personalInfo.Summary = newPersonalInfo.Summary;
+
+        if (newPersonalInfo.PersonImage is null)
+        {
+            personalInfo.PersonImageURL = null;
+        }
+        else
+        {
+            personalInfo.PersonImageURL = await this.fileService.SaveImageAsync(newPersonalInfo.PersonImage, "resumesimages");
+        }
 
         var resume = await this.context.Resumes
                                                 .Where(r => r.PersonalInfoId == id)
