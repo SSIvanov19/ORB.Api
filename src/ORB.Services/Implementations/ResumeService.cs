@@ -4,11 +4,14 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HandlebarsDotNet;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Shared.Models.Resume;
+using PuppeteerSharp.Media;
+using PuppeteerSharp;
 
 namespace ORB.Services.Implementations;
 
@@ -107,5 +110,54 @@ internal class ResumeService : IResumeService
         resume!.IsDeleted = false;
 
         await this.context.SaveChangesAsync();
+    }
+
+    public async Task<MemoryStream> CreatePDFForResumeAsync(ResumeVM resume)
+    {
+        var template = await this.context.Templates.FindAsync(resume.TemplateId);
+
+        var source = template!.Content;
+
+        var handlebars = Handlebars.Compile(source);
+
+        var personalInfo = await this.context.PersonalInfo.FindAsync(resume.PersonalInfoId);
+
+        var educations = await this.context.Educations.Where(e => e.ResumeId == resume.Id).ToListAsync();
+
+        var workExperience = await this.context.WorkExperiences.Where(e => e.ResumeId == resume.Id).ToListAsync();
+
+        var data = new
+        {
+            FullName = resume.UserFullNames,
+            ImageUrl = personalInfo.PersonImageURL,
+            personalInfo.Summary,
+            Contacts = new
+            {
+                personalInfo.Address,
+                personalInfo.PhoneNumber,
+                personalInfo.Email,
+            },
+            Education = educations.ToArray(),
+            Experience = workExperience.ToArray(),
+        };
+
+        var html = handlebars(data);
+
+        await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+        {
+            Headless = true,
+        });
+        await using var page = await browser.NewPageAsync();
+        await page.EmulateMediaTypeAsync(MediaType.Screen);
+        await page.SetContentAsync(html);
+        using var pdfContent = await page.PdfStreamAsync(new PdfOptions
+        {
+            PrintBackground = true,
+        });
+
+        var stream = new MemoryStream();
+        pdfContent.CopyTo(stream);
+        return stream;
     }
 }

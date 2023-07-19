@@ -204,4 +204,36 @@ public class ResumesController : ControllerBase
 
         return this.Ok(resumes);
     }
+
+    [HttpGet("{id}/download")]
+    public async Task<FileStreamResult?> DownloadResumeAsPDFAsync(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return null;
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return null;
+        }
+
+        if (resume.IsDeleted)
+        {
+            return null;
+        }
+
+        MemoryStream fileMemoryStream = await this.resumeService.CreatePDFForResumeAsync(resume);
+
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "test.pdf");
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            fileMemoryStream.WriteTo(fileStream);
+        }
+
+        fileMemoryStream.Seek(0, SeekOrigin.Begin);
+        return new FileStreamResult(fileMemoryStream, "application/pdf");
+    }
 }
