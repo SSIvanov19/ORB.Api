@@ -26,6 +26,13 @@ public interface IEducationService
     Task DeleteEducationInfoByIdAsync(string id);
 
     /// <summary>
+    /// Gets all education items linked to a resume by ID.
+    /// </summary>
+    /// <param name="id">The ID of the resume.</param>
+    /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation. The task result contains a list of <see cref="EducationVM"/>.</returns>
+    Task<List<EducationVM>> GetAllEducationsForResumeWithIdAsync(string id);
+
+    /// <summary>
     /// Get an education item by its id and user id.
     /// </summary>
     /// <param name="id">The id of the education item to be retrieved.</param>

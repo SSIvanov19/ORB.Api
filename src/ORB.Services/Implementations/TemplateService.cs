@@ -5,6 +5,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
+using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Shared.Models.Templates;
 
@@ -51,5 +52,22 @@ public class TemplateService : ITemplateService
         }
 
         return this.mapper.Map<TemplateVM>(template);
+    }
+
+    /// <inheritdoc/>
+    public async Task AddTemplateIfDoesNotExistAsync(TemplateIM templateIM)
+    {
+        var templates = await this.context.Templates.Where(t => t.Content == templateIM.Content).ToListAsync();
+
+        if (templates.Count != 0)
+        {
+            return;
+        }
+
+        var template = this.mapper.Map<Template>(templateIM);
+
+        await this.context.Templates.AddAsync(template);
+
+        await this.context.SaveChangesAsync();
     }
 }

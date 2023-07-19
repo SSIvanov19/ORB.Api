@@ -38,7 +38,7 @@ public class MappingProfile : Profile
             .ForMember(d => d.EndDate, cfg => cfg.MapFrom(s => DateOnly.ParseExact(s.EndDate!, "yyyy-MM-dd")));
         this.CreateMap<Education, EducationVM>();
         this.CreateMap<Template, TemplateVM>();
-        this.CreateMap<TemplateVM, Template>();
+        this.CreateMap<TemplateIM, Template>();
         this.CreateMap<WorkExperienceIM, WorkExperience>()
             .ForMember(d => d.StartDate, cfg => cfg.MapFrom(s => DateOnly.ParseExact(s.StartDate, "yyyy-MM-dd")))
             .ForMember(d => d.EndDate, cfg => cfg.MapFrom(s => DateOnly.ParseExact(s.EndDate!, "yyyy-MM-dd")));

@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using ORB.Data.Data;
 using ORB.Data.Models.Auth;
 using ORB.Services;
+using ORB.WebHost.Helpers;
 using ORB.WebHost.Models;
 using ORB.WebHost.SwaggerConfiguration;
 
@@ -85,6 +86,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(configuration["Syncfusion:LicenseKey"]);
+
+await app.InitAppAsync();
 app.UseSwagger();
 
 // Configure the HTTP request pipeline.

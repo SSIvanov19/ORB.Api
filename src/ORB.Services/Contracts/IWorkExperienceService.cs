@@ -24,6 +24,13 @@ public interface IWorkExperienceService
     Task DeleteWorkExperienceInfoByIdAsync(string id);
 
     /// <summary>
+    /// Retrieves all work experience items for a given resume ID.
+    /// </summary>
+    /// <param name="id">The ID of the resume for which to retrieve the work experience items.</param>
+    /// <returns>A list of WorkExperience objects.</returns>
+    Task<List<WorkExperienceVM>> GetAllWorkExperienceForResumeWithIdAsync(string id);
+
+    /// <summary>
     /// Retrieves a work experience item by ID and user ID.
     /// </summary>
     /// <param name="id">The ID of the work experience item to be retrieved.</param>

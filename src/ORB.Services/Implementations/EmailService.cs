@@ -38,6 +38,11 @@ internal class EmailService : IEmailService
             HtmlContent = emailRequest.Message,
         };
 
+        if (!string.IsNullOrEmpty(emailRequest.FileName))
+        {
+            sendGridMessage.AddAttachment(emailRequest.FileName, emailRequest.FileContent);
+        }
+
         sendGridMessage.AddTo(new EmailAddress(emailRequest.Email));
         await client.SendEmailAsync(sendGridMessage);
     }

@@ -10,8 +10,8 @@ using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Shared.Models.Resume;
-using PuppeteerSharp.Media;
-using PuppeteerSharp;
+using Syncfusion.Drawing;
+using Syncfusion.HtmlConverter;
 
 namespace ORB.Services.Implementations;
 
@@ -112,6 +112,7 @@ internal class ResumeService : IResumeService
         await this.context.SaveChangesAsync();
     }
 
+    /// <inheritdoc/>
     public async Task<MemoryStream> CreatePDFForResumeAsync(ResumeVM resume)
     {
         var template = await this.context.Templates.FindAsync(resume.TemplateId);
@@ -143,21 +144,30 @@ internal class ResumeService : IResumeService
 
         var html = handlebars(data);
 
-        await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
-        await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+        var htmlConverter = new HtmlToPdfConverter
         {
-            Headless = true,
-        });
-        await using var page = await browser.NewPageAsync();
-        await page.EmulateMediaTypeAsync(MediaType.Screen);
-        await page.SetContentAsync(html);
-        using var pdfContent = await page.PdfStreamAsync(new PdfOptions
-        {
-            PrintBackground = true,
-        });
+            ConverterSettings = new BlinkConverterSettings
+            {
+                Margin = new Syncfusion.Pdf.Graphics.PdfMargins
+                {
+                    All = 0,
+                },
+                ViewPortSize = new Size(1080 / 2, 1920 / 2),
+                PdfPageSize = Syncfusion.Pdf.PdfPageSize.A4,
+                CommandLineArguments = new BlinkCommandLineArguments
+                {
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                },
+            },
+        };
+
+        var document = htmlConverter.Convert(html, string.Empty);
 
         var stream = new MemoryStream();
-        pdfContent.CopyTo(stream);
+
+        document.Save(stream);
+
         return stream;
     }
 }

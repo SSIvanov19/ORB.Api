@@ -23,4 +23,11 @@ public interface ITemplateService
     /// <param name="id">ID of template to find.</param>
     /// <returns>Template with provided ID.</returns>
     Task<TemplateVM?> FindTemplateByIdAsync(string id);
+
+    /// <summary>
+    /// Adds a new template if it does not already exist.
+    /// </summary>
+    /// <param name="template">The template to add.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public Task AddTemplateIfDoesNotExistAsync(TemplateIM template);
 }

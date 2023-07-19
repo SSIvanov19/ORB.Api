@@ -63,5 +63,10 @@ public interface IResumeService
     /// <returns>The updated resume.</returns>
     Task<ResumeVM> UpdateResumeInfoWithIdAsync(string id, ResumeIM newResumeInfo);
 
+    /// <summary>
+    /// Creates a PDF file for the given resume.
+    /// </summary>
+    /// <param name="resume">The resume as view model.</param>
+    /// <returns>A memory stream containing the PDF file.</returns>
     Task<MemoryStream> CreatePDFForResumeAsync(ResumeVM resume);
 }

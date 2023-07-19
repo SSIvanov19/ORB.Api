@@ -3,6 +3,7 @@
 // </copyright>
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
@@ -68,6 +69,14 @@ internal class EducationService : IEducationService
         this.context.Educations.Remove(education!);
 
         await this.context.SaveChangesAsync();
+    }
+
+    /// <inheritdoc/>
+    public async Task<List<EducationVM>> GetAllEducationsForResumeWithIdAsync(string id)
+    {
+        return await this.context.Educations.Where(e => e.ResumeId == id)
+                                            .ProjectTo<EducationVM>(this.mapper.ConfigurationProvider)
+                                            .ToListAsync();
     }
 
     /// <inheritdoc/>
