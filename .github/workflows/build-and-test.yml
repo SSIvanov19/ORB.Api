@@ -9,7 +9,7 @@ on:
 
 env:
   DOTNET_VERSION: '7.0.306'
-  WORKING_DIRECTORY: src\ORB.WebHost
+  WORKING_DIRECTORY: src/ORB.WebHost
 
 jobs:
   build-and-test:
