@@ -5,7 +5,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ORB.Services.Contracts;
+using ORB.Shared.Models;
+using ORB.Shared.Models.Education;
 using ORB.Shared.Models.Resume;
+using ORB.Shared.Models.WorkExperience;
+using static ORB.Services.Contracts.IEmailService;
 
 namespace ORB.WebHost.Controllers;
 
@@ -17,28 +21,40 @@ namespace ORB.WebHost.Controllers;
 [Route("api/[controller]")]
 public class ResumesController : ControllerBase
 {
+    private readonly IWorkExperienceService workExperienceService;
     private readonly IPersonalInfoService personalInfoService;
+    private readonly IEducationService educationService;
     private readonly ITemplateService templateService;
     private readonly IResumeService resumeService;
+    private readonly IEmailService emailService;
     private readonly ICurrentUser currentUser;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ResumesController"/> class.
     /// </summary>
+    /// <param name="workExperienceService">Work experience service.</param>
     /// <param name="personalInfoService">Personal info service.</param>
+    /// <param name="educationService">Education service.</param>
     /// <param name="templateService">Template service.</param>
-    /// <param name="currentUser">Current user.</param>
     /// <param name="resumeService">Resume service.</param>
+    /// <param name="emailService">Email service.</param>
+    /// <param name="currentUser">Current user.</param>
     public ResumesController(
+        IWorkExperienceService workExperienceService,
         IPersonalInfoService personalInfoService,
-        ICurrentUser currentUser,
+        IEducationService educationService,
         ITemplateService templateService,
-        IResumeService resumeService)
+        IResumeService resumeService,
+        IEmailService emailService,
+        ICurrentUser currentUser)
     {
+        this.workExperienceService = workExperienceService;
         this.personalInfoService = personalInfoService;
-        this.currentUser = currentUser;
+        this.educationService = educationService;
         this.templateService = templateService;
         this.resumeService = resumeService;
+        this.emailService = emailService;
+        this.currentUser = currentUser;
     }
 
     /// <summary>
@@ -120,7 +136,7 @@ public class ResumesController : ControllerBase
 
         if (resume.UserId != this.currentUser.UserId)
         {
-            return this.Unauthorized();
+            return this.Forbid();
         }
 
         if (resume.IsDeleted)
@@ -150,7 +166,7 @@ public class ResumesController : ControllerBase
 
         if (resume.UserId != this.currentUser.UserId)
         {
-            return this.Unauthorized();
+            return this.Forbid();
         }
 
         if (resume.IsDeleted)
@@ -180,7 +196,7 @@ public class ResumesController : ControllerBase
 
         if (resume.UserId != this.currentUser.UserId)
         {
-            return this.Unauthorized();
+            return this.Forbid();
         }
 
         if (!resume.IsDeleted)
@@ -203,5 +219,133 @@ public class ResumesController : ControllerBase
         var resumes = await this.resumeService.GetAllDeletedResumesForUserWithIdAsync(this.currentUser.UserId);
 
         return this.Ok(resumes);
+    }
+
+    /// <summary>
+    /// Endpoint for downloading a resume as PDF.
+    /// </summary>
+    /// <param name="id">Id of the resume to be download.</param>
+    /// <returns>The resume as PDF.</returns>
+    [HttpGet("{id}/download")]
+    public async Task<FileStreamResult?> DownloadResumeAsPDFAsync(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return null;
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return null;
+        }
+
+        if (resume.IsDeleted)
+        {
+            return null;
+        }
+
+        var fileMemoryStream = await this.resumeService.CreatePDFForResumeAsync(resume);
+
+        fileMemoryStream.Seek(0, SeekOrigin.Begin);
+        return new FileStreamResult(fileMemoryStream, "application/pdf");
+    }
+
+    /// <summary>
+    /// Endpoints for getting all educations for a resume with a specific id.
+    /// </summary>
+    /// <param name="id">Id of the resume.</param>
+    /// <returns>A list of educations for the resume.</returns>
+    [HttpGet("{id}/educations")]
+    public async Task<ActionResult<List<EducationVM>>> GetAllEducationsForResumeWithId(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return this.NotFound();
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return this.Forbid();
+        }
+
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest();
+        }
+
+        var educations = await this.educationService.GetAllEducationsForResumeWithIdAsync(id);
+
+        return this.Ok(educations);
+    }
+
+    /// <summary>
+    /// Endpoints for getting all work experiences for a resume with a specific id.
+    /// </summary>
+    /// <param name="id">Id of the resume.</param>
+    /// <returns>A list of work experiences for the resume.</returns>
+    [HttpGet("{id}/work")]
+    public async Task<ActionResult<List<WorkExperienceVM>>> GetAllWorkExperienceForResumeWithId(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return this.NotFound();
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return this.Forbid();
+        }
+
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest();
+        }
+
+        var workExperiences = await this.workExperienceService.GetAllWorkExperienceForResumeWithIdAsync(id);
+
+        return this.Ok(workExperiences);
+    }
+
+    /// <summary>
+    /// Share the resume with specified ID by email with the specified share information.
+    /// </summary>
+    /// <param name="id">The ID of the resume to share.</param>
+    /// <param name="share">The share information.</param>
+    /// <returns>A <see cref="IActionResult"/> with the status response code.</returns>
+    [HttpPost("{id}")]
+    public async Task<IActionResult> ShareResumeByEmail(string id, [FromBody] ShareIM share)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return this.NotFound();
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return this.Forbid();
+        }
+
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest();
+        }
+
+        var fileMemoryStream = await this.resumeService.CreatePDFForResumeAsync(resume);
+
+        fileMemoryStream.Seek(0, SeekOrigin.Begin);
+
+        var emailRequest = new SendEmailRequest(share.Email, "Check out my resume", "Hi,\r\nCheck out my resume!", "resume.pdf", Convert.ToBase64String(fileMemoryStream.ToArray()));
+
+        await this.emailService.SendEmailAsync(emailRequest);
+
+        return this.Ok();
     }
 }

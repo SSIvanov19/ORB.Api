@@ -90,8 +90,8 @@ internal class PersonalInfoService : IPersonalInfoService
         }
 
         var resume = await this.context.Resumes
-                                                .Where(r => r.PersonalInfoId == id)
-                                                .FirstOrDefaultAsync();
+                                            .Where(r => r.PersonalInfoId == id)
+                                            .FirstOrDefaultAsync();
 
         resume!.LastModified = DateTime.UtcNow;
 

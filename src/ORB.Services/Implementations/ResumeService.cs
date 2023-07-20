@@ -4,11 +4,14 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HandlebarsDotNet;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
 using ORB.Services.Contracts;
 using ORB.Shared.Models.Resume;
+using Syncfusion.Drawing;
+using Syncfusion.HtmlConverter;
 
 namespace ORB.Services.Implementations;
 
@@ -107,5 +110,64 @@ internal class ResumeService : IResumeService
         resume!.IsDeleted = false;
 
         await this.context.SaveChangesAsync();
+    }
+
+    /// <inheritdoc/>
+    public async Task<MemoryStream> CreatePDFForResumeAsync(ResumeVM resume)
+    {
+        var template = await this.context.Templates.FindAsync(resume.TemplateId);
+
+        var source = template!.Content;
+
+        var handlebars = Handlebars.Compile(source);
+
+        var personalInfo = await this.context.PersonalInfo.FindAsync(resume.PersonalInfoId);
+
+        var educations = await this.context.Educations.Where(e => e.ResumeId == resume.Id).ToListAsync();
+
+        var workExperience = await this.context.WorkExperiences.Where(e => e.ResumeId == resume.Id).ToListAsync();
+
+        var data = new
+        {
+            FullName = resume.UserFullNames,
+            ImageUrl = personalInfo.PersonImageURL,
+            personalInfo.Summary,
+            Contacts = new
+            {
+                personalInfo.Address,
+                personalInfo.PhoneNumber,
+                personalInfo.Email,
+            },
+            Education = educations.ToArray(),
+            Experience = workExperience.ToArray(),
+        };
+
+        var html = handlebars(data);
+
+        var htmlConverter = new HtmlToPdfConverter
+        {
+            ConverterSettings = new BlinkConverterSettings
+            {
+                Margin = new Syncfusion.Pdf.Graphics.PdfMargins
+                {
+                    All = 0,
+                },
+                ViewPortSize = new Size(1080 / 2, 1920 / 2),
+                PdfPageSize = Syncfusion.Pdf.PdfPageSize.A4,
+                CommandLineArguments = new BlinkCommandLineArguments
+                {
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                },
+            },
+        };
+
+        var document = htmlConverter.Convert(html, string.Empty);
+
+        var stream = new MemoryStream();
+
+        document.Save(stream);
+
+        return stream;
     }
 }

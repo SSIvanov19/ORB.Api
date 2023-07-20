@@ -3,6 +3,7 @@
 // </copyright>
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using ORB.Data.Data;
 using ORB.Data.Models.Resumes;
@@ -69,6 +70,13 @@ internal class WorkExperienceService : IWorkExperienceService
         this.context.WorkExperiences.Remove(workExperience!);
 
         await this.context.SaveChangesAsync();
+    }
+
+    public async Task<List<WorkExperienceVM>> GetAllWorkExperienceForResumeWithIdAsync(string id)
+    {
+        return await this.context.WorkExperiences.Where(e => e.ResumeId == id)
+                                            .ProjectTo<WorkExperienceVM>(this.mapper.ConfigurationProvider)
+                                            .ToListAsync();
     }
 
     /// <inheritdoc/>
