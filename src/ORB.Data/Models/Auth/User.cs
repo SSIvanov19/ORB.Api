@@ -16,11 +16,11 @@ public class User : IdentityUser
     /// Gets or sets first name of the user.
     /// </summary>
     [Required]
-    public string? FirstName { get; set; }
+    public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets last name of the user.
     /// </summary>
     [Required]
-    public string? LastName { get; set; }
+    public string LastName { get; set; } = string.Empty;
 }
