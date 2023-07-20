@@ -59,7 +59,7 @@ public class PersonalInfoController : ControllerBase
     /// <param name="newPersonalInfo">Updated information of the personal info.</param>
     /// <returns>The updated resume.</returns>
     [HttpPut("{id}")]
-    public async Task<ActionResult<ResumeVM>> UpdateResumeWithIdAsync(string id, [FromBody] PersonalInfoIM newPersonalInfo)
+    public async Task<ActionResult<ResumeVM>> UpdateResumeWithIdAsync(string id, [FromForm] PersonalInfoIM newPersonalInfo)
     {
         var personalInfo = await this.personalInfoService.GetPersonalInfoByIdAsync(id, this.currentUser.UserId);
 

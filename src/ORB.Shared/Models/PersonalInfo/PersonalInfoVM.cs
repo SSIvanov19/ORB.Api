@@ -38,4 +38,9 @@ public class PersonalInfoVM
     /// Gets or sets the summary of person's skills and experience.
     /// </summary>
     public string Summary { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the URL of person's image.
+    /// </summary>
+    public string? PersonImageURL { get; set; } = null;
 }
