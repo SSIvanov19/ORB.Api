@@ -80,11 +80,7 @@ internal class PersonalInfoService : IPersonalInfoService
         personalInfo.Email = newPersonalInfo.Email;
         personalInfo.Summary = newPersonalInfo.Summary;
 
-        if (newPersonalInfo.PersonImage is null)
-        {
-            personalInfo.PersonImageURL = null;
-        }
-        else
+        if (newPersonalInfo.PersonImage is not null)
         {
             personalInfo.PersonImageURL = await this.fileService.SaveImageAsync(newPersonalInfo.PersonImage, "resumesimages");
         }

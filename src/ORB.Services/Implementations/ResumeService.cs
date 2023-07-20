@@ -157,7 +157,7 @@ internal class ResumeService : IResumeService
                 {
                     All = 0,
                 },
-                ViewPortSize = new Size(1080 / 2, 1920 / 2),
+                ViewPortSize = new Size(543, 765),
                 PdfPageSize = Syncfusion.Pdf.PdfPageSize.A4,
                 CommandLineArguments = new BlinkCommandLineArguments
                 {
