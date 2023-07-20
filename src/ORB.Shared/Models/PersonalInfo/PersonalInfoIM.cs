@@ -4,6 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using ORB.Shared.DataAnnotations;
 
 namespace ORB.Shared.Models.PersonalInfo;
 
@@ -45,5 +46,6 @@ public class PersonalInfoIM
     /// <summary>
     /// Gets or sets the image of person.
     /// </summary>
+    [Image]
     public IFormFile? PersonImage { get; set; }
 }
