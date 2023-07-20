@@ -40,7 +40,7 @@ builder.Services
     {
         conf.ClearProviders();
 
-        // conf.AddSeq(configuration.GetSection("Seq"));
+        conf.AddSeq(configuration.GetSection("Seq"));
         conf.AddConsole();
     });
 
