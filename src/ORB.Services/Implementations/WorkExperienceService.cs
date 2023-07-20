@@ -89,6 +89,11 @@ internal class WorkExperienceService : IWorkExperienceService
             return null;
         }
 
+        if (workExperience.Resume.IsDeleted)
+        {
+            return null;
+        }
+
         return this.mapper.Map<WorkExperienceVM>(workExperience);
     }
 

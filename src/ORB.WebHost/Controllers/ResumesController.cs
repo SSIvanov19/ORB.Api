@@ -18,6 +18,7 @@ namespace ORB.WebHost.Controllers;
 public class ResumesController : ControllerBase
 {
     private readonly IPersonalInfoService personalInfoService;
+    private readonly ITemplateService templateService;
     private readonly IResumeService resumeService;
     private readonly ICurrentUser currentUser;
 
@@ -25,15 +26,18 @@ public class ResumesController : ControllerBase
     /// Initializes a new instance of the <see cref="ResumesController"/> class.
     /// </summary>
     /// <param name="personalInfoService">Personal info service.</param>
+    /// <param name="templateService">Template service.</param>
     /// <param name="currentUser">Current user.</param>
     /// <param name="resumeService">Resume service.</param>
     public ResumesController(
         IPersonalInfoService personalInfoService,
         ICurrentUser currentUser,
+        ITemplateService templateService,
         IResumeService resumeService)
     {
         this.personalInfoService = personalInfoService;
         this.currentUser = currentUser;
+        this.templateService = templateService;
         this.resumeService = resumeService;
     }
 
@@ -45,13 +49,10 @@ public class ResumesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ResumeVM>> CreateResumeAsync([FromBody] ResumeIM resumeIM)
     {
-        // Check if there is template with the given id
-        /*
-        if (await this.templateService.GetTemplateByIdAsync(resume.TemplateId) is null)
+        if (await this.templateService.FindTemplateByIdAsync(resumeIM.TemplateId) is null)
         {
             return this.BadRequest();
         }
-        */
 
         var personalInfo = await this.personalInfoService
                                         .CreateDefaultPersonalInfoForUserWithIdAsync(this.currentUser.UserId);
@@ -90,7 +91,12 @@ public class ResumesController : ControllerBase
 
         if (resume.UserId != this.currentUser.UserId)
         {
-            return this.Unauthorized();
+            return this.Forbid();
+        }
+
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest();
         }
 
         return this.Ok(resume);
@@ -117,8 +123,85 @@ public class ResumesController : ControllerBase
             return this.Unauthorized();
         }
 
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest();
+        }
+
         resume = await this.resumeService.UpdateResumeInfoWithIdAsync(id, newResumeInfo);
 
         return this.Ok(resume);
+    }
+
+    /// <summary>
+    /// Soft delete a resume by its id.
+    /// </summary>
+    /// <param name="id">Id of the resume to be deleted.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous Soft Delete operation.</returns>
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteResumeWithIdAsync(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return this.NotFound();
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return this.Unauthorized();
+        }
+
+        if (resume.IsDeleted)
+        {
+            return this.BadRequest();
+        }
+
+        await this.resumeService.DeleteResumeAsync(id);
+
+        return this.Ok();
+    }
+
+    /// <summary>
+    /// Recover a deleted resume by its id.
+    /// </summary>
+    /// <param name="id">Id of the deleted resume to recover.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous Recover operation.</returns>
+    [HttpPost("recover/{id}")]
+    public async Task<IActionResult> RecoverResumeWithIdAsync(string id)
+    {
+        var resume = await this.resumeService.GetResumeByIdAsync(id);
+
+        if (resume is null)
+        {
+            return this.NotFound();
+        }
+
+        if (resume.UserId != this.currentUser.UserId)
+        {
+            return this.Unauthorized();
+        }
+
+        if (!resume.IsDeleted)
+        {
+            return this.BadRequest();
+        }
+
+        await this.resumeService.RecoverResumeAsync(id);
+
+        return this.Ok();
+    }
+
+    /// <summary>
+    /// Endpoint for getting all deleted resumes of the current user.
+    /// </summary>
+    /// <returns>List of deleted resumes of the current user.</returns>
+    [HttpGet("deleted")]
+    public async Task<ActionResult<List<ResumeVM>>> GetAllDeletedResumesForCurrentUserAsync()
+    {
+        var resumes = await this.resumeService.GetAllDeletedResumesForUserWithIdAsync(this.currentUser.UserId);
+
+        return this.Ok(resumes);
     }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ORB.Shared.Models.Resume;
+﻿namespace ORB.Shared.Models.Resume;
 
 /// <summary>
 /// Represents a Resume View Model.
@@ -52,6 +44,11 @@ public class ResumeVM
     /// Gets or sets the TemplateId of the Template associated with the Resume.
     /// </summary>
     public string? TemplateId { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the Resume is deleted.
+    /// </summary>
+    public bool IsDeleted { get; set; }
 
     /// <summary>
     /// Gets or sets the list of Education models associated with the Resume.

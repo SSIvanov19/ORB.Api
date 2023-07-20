@@ -21,5 +21,5 @@ public class ResumeIM
     /// Gets or sets the TemplateId of the Template associated with the Resume.
     /// </summary>
     [Required]
-    public string? TemplateId { get; set; }
+    public string TemplateId { get; set; } = string.Empty;
 }

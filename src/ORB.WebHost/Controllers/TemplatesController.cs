@@ -32,6 +32,7 @@ public class TemplatesController : ControllerBase
     public async Task<ActionResult<IEnumerable<TemplateVM>>> GetTemplates()
     {
         var templates = await this.templateService.GetAllTemplatesAsync();
+
         if (templates is null)
         {
             return this.NotFound();

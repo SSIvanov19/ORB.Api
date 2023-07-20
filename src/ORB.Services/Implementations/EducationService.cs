@@ -88,6 +88,11 @@ internal class EducationService : IEducationService
             return null;
         }
 
+        if (education.Resume.IsDeleted)
+        {
+            return null;
+        }
+
         return this.mapper.Map<EducationVM>(education);
     }
 

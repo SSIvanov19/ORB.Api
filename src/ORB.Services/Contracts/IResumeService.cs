@@ -21,11 +21,32 @@ public interface IResumeService
     Task<ResumeVM> CreateResumeAsync(ResumeIM resume, string personaInfoId, string userId);
 
     /// <summary>
+    /// Soft deletes a resume.
+    /// </summary>
+    /// <param name="id">Id of the resume to be deleted.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous Soft Delete operation.</returns>
+    Task DeleteResumeAsync(string id);
+
+    /// <summary>
+    /// Recovers a soft deleted resume.
+    /// </summary>
+    /// <param name="id">Id of the resume to be recovered.</param>
+    /// <returns>A <see cref="Task"/> that represents the asynchronous Soft Delete operation.</returns>
+    Task RecoverResumeAsync(string id);
+
+    /// <summary>
     /// Retrieves all resumes belonging to the user with the given ID.
     /// </summary>
     /// <param name="userId">The ID of the user.</param>
     /// <returns>A list of all resumes belonging to the user with the given ID.</returns>
     Task<List<ResumeVM>> GetAllResumesForUserWithIdAsync(string userId);
+
+    /// <summary>
+    /// Retrieves all soft deleted resumes belonging to the user with the given ID.
+    /// </summary>
+    /// <param name="userId">Id of the user.</param>
+    /// <returns>A list of all deleted resume belonging to the user with the given ID.</returns>
+    Task<List<ResumeVM>> GetAllDeletedResumesForUserWithIdAsync(string userId);
 
     /// <summary>
     /// Gets a resume by its ID.
