@@ -227,7 +227,7 @@ public class ResumesController : ControllerBase
     /// <param name="id">Id of the resume to be download.</param>
     /// <returns>The resume as PDF.</returns>
     [HttpGet("{id}/download")]
-    public async Task<FileStreamResult?> DownloadResumeAsPDFAsync(string id)
+    public async Task<string?> DownloadResumeAsPDFAsync(string id)
     {
         var resume = await this.resumeService.GetResumeByIdAsync(id);
 
@@ -248,8 +248,8 @@ public class ResumesController : ControllerBase
 
         var fileMemoryStream = await this.resumeService.CreatePDFForResumeAsync(resume);
 
-        fileMemoryStream.Seek(0, SeekOrigin.Begin);
-        return new FileStreamResult(fileMemoryStream, "application/pdf");
+        var bytes = fileMemoryStream.ToArray();
+        return Convert.ToBase64String(bytes);
     }
 
     /// <summary>

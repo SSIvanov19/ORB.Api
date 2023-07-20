@@ -23,7 +23,6 @@ public static class InitApp
         using var scope = app.Services.CreateScope();
         var templateService = scope.ServiceProvider.GetRequiredService<ITemplateService>();
 
-
         var templates = new List<TemplateIM>
         {
             new TemplateIM
@@ -49,14 +48,8 @@ public static class InitApp
                     display: flex;  
                     justify-content: space-between;
                     margin: 0 auto;
-                    width: 1024px;
-                }
-
-                @media screen and (max-width: 1186px) {
-                    .resume0-container {
-                        flex-direction: column;
+                    flex-direction: column;
                         width: 100%;
-                    }
                 }
 
                 .resume0 .dark-side {
@@ -267,6 +260,502 @@ public static class InitApp
                     </div>
                 </div>
                 </body>
+                </html>
+                """,
+            },
+            new TemplateIM
+            {
+                Name = "Purple forest",
+                Content = """
+                  <html>
+                  <head>
+                    <style>
+
+                    @import url('https://fonts.googleapis.com/css2?family=Josefin+Slab&family=Ysabeau+SC:wght@300&display=swap');
+
+                    .resume1>* {
+                      font-family: Arial, sans-serif;
+                      background-color: #F5F5F5;
+                      color: #ffffff;
+                      margin: 0;
+                      padding: 20px;
+                    }
+
+                    .resume1-all-container {
+                        display: flex;
+                        flex-direction: row;
+                      margin: 0;
+                    }
+
+                    .resume1-container {
+                        min-width: 600px;
+                        max-width: 700px;
+                      height: 1000px;
+                        background: #fff;
+                        margin: 0px auto 0px; 
+                        box-shadow: 1px 1px 2px #DAD7D7;
+                        border-radius: 3px;  
+                        padding: 40px;
+                        margin-top: 50px;
+                    }
+
+                    .resume1-left-button-container {
+                      width: 30%;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                      padding-right: 0;
+                      margin: 0;
+                    }
+
+                    .resume1-right-button-container {
+                        width: 30%;
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        padding-left: 20%;
+                      margin: 0;
+                    }
+
+                    @media screen and (max-width: 1186px) {
+                      .resume1-container {
+                        flex-direction: column;
+                        width: 100%;
+                      }
+                    }
+
+                    @media only screen and (max-width: 600px) {
+                      .col {
+                        display: block;
+                        width: 100%;
+                      }
+                    }
+
+                    .resume1 .strip1 {
+                      width:100%;
+                      height: 100%;
+                      border-style: solid;
+                      border-color: #ffffff;
+                      background-color: #ffffff;
+                    }
+
+                    .resume1 .strip2 {
+                      width: 100%;
+                      height: 60px;
+                      border-style: solid;
+                      background-color: #ffffff;
+                    }
+
+                    .resume1 .lower-side {
+                      background-color: #ACBCFF;
+                      flex-basis: 60%;
+                      padding: 10px;
+                    }
+
+                    .resume1 .photo {
+                      width: 150px;
+                      height: 150px;
+                      display: inline-block;
+                      margin-top: 10px;
+                      margin-bottom: 10px;
+                    }
+
+                    .resume1 .about-me {
+                      display: grid;
+                      background-color: #68c1a4;
+
+                    }
+
+                    .resume1 .text-green {
+                      color: #68c1a4;
+                    }
+
+                    .resume1 .text-blue {
+                      color: #ACBCFF;
+                    }
+
+                    .resume1 p {
+                      margin-bottom: 5px;
+                      font-family: 'Ysabeau SC', sans-serif;
+                    }
+
+                    .resume1 .section-title {
+                      font-size: 37px;
+                      font-weight: 700;
+                      line-height: 1.5;
+                      margin-top: 10px;
+                      font-family: 'Josefin Slab', serif;
+                    }
+
+                    .resume1 .section-content {
+                      text-align: left;
+                      margin-top: 20px;
+                      margin-bottom: 20px;
+                    }
+                    </style>
+                  </head>
+                  <body>
+                    <div class="resume1-all-container">
+                      <div class="resume1">
+                        <div class="resume1-container">
+                          <div class="col-container">
+                            <div class="strip1 col">
+                              <h1 class="section-title text-blue">{{FullName}}</h1>
+                              <div image-container>
+                                {{#if ImageUrl}}
+                                        <img class="photo"
+                                            src={{ImageUrl}}
+                                            alt={{FullName}} />  
+                                    {{/if}}   
+                              </div>
+                              <p class="text-green">{{Summary}}</p>
+                              <div class="contact-section about-me">
+                                <h1 class="section-title strip2 text-blue">About Me</h1>
+                                <div class="section-content">
+                                  <p>
+                                    <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                      <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                    </svg>
+                                    Address: {{Contacts.Address}}
+                                  </p>
+                                  <p>
+                                    <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                      <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                    </svg>
+                                    Phone: {{Contacts.PhoneNumber}}
+                                  </p>
+                                  <p>
+                                    <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                      <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                    </svg>
+                                    Email: {{Contacts.Email}}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="lower-side col">
+                              <div class="education-section">
+                                <h1 class="section-title strip2 text-green">Education</h1>
+                                {{#each Education}}
+                                  <div class="section-content">
+                                    <p>
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                      <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                    </svg>
+                                            Institute: {{this.SchoolName}}</p>
+                                        <p>
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                              <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                            </svg>
+                                            Degree: {{this.Degree}}
+                                        </p>
+                                        <p>
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                              <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                            </svg>
+                                            Field of Study: {{this.FieldOfStudy}}
+                                        </p>  
+                                        <p>
+                                          <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                            <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                          </svg>
+                                          Description: {{this.Description}}
+                                          </p>  
+                                          {{#if this.EndDate}}
+                                            <p>
+                                                <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                                Start Date: {{this.StartDate}}
+                                            </p>
+                                            <p style="margin-bottom: 20px">
+                                                <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                                End Date: {{this.EndDate}}
+                                            </p>
+                                          {{else}}
+                                            <p style="margin-bottom: 20px">
+                                              <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                              </svg>
+                                              Start Date: {{this.StartDate}}
+                                            </p>
+                                          {{/if}}
+                                  </div>
+                                {{/each}}
+                              </div>
+                              <div class="experience-section">
+                                <h1 class="section-title strip2 text-green">Work Experience</h1>
+                                {{#each Experience}}
+                                <div class="section-content">
+                                  <p>
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                            Company: {{this.CompanyName}}
+                                        </p>
+                                        <p>
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                            Position: {{this.Position}}
+                                        </p>
+                                        <p>
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                            Description: {{this.Description}}
+                                        </p>
+                                        {{#if this.EndDate}}
+                                            <p>
+                                                <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                                Start Date: {{this.StartDate}}
+                                            </p>
+
+                                            <p style="margin-bottom: 20px">
+                                                <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                                End Date: {{this.EndDate}}
+                                            </p>
+                                        {{else}}
+                                            <p style="margin-bottom: 20px">
+                                                <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" xmlns="http://www.w3.org/2000/svg" height="1em" fill="#ffffff" viewBox="0 0 256 512">
+                                                  <path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                                </svg>
+                                                Start Date: {{this.StartDate}}
+                                            </p>
+                                        {{/if}}  
+                                </div>
+                                {{/each}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </body>
+                </html>
+                """,
+            },
+            new TemplateIM
+            {
+                Name = "Osaka Bay",
+                Content = """
+                    <html>
+                    <head>
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Signika:wght@300&display=swap');
+
+                            .resume2 > *{
+                                font-family: Arial, sans-serif;
+                                background-color: #F5F5F5;
+                                color: #000000;
+                                margin: 0;
+                                padding: 20px;
+                            }
+
+                            .resume2-all-container {
+                                display: flex;
+                                flex-direction: row;
+                            }
+
+                            .resume2-left-button-container {
+                                width: 30%;
+                                display: flex;
+                                justify-content: flex-start;
+                                align-items: center;
+                                padding-right: 0;
+                                margin: 0;
+                            }
+
+                            .resume2-right-button-container {
+                                width: 30%;
+                                display: flex;
+                                justify-content: flex-end;
+                                align-items: center;
+                                padding-left: 20%;
+                                margin: 0;
+                            }
+
+                            .resume2-container {
+                                min-width: 600px;
+                                max-width: 700px;
+                                height: 1000px;
+                                background: #fff;
+                                margin: 0px auto 0px; 
+                                box-shadow: 1px 1px 2px #DAD7D7;
+                                border-radius: 3px;  
+                                padding: 40px;
+                                margin-top: 50px;
+                            }
+
+                            @media screen and (max-width: 1186px) {
+                                .resume2-container {
+                                    flex-direction: column;
+                                    width: 100%;
+                                }
+                            }
+
+                            .resume2 .header {
+                                margin-bottom: 30px;
+                            }
+
+                            .separator {
+                                height: 10px;
+                                display: inline-block;
+                                border-left: 2px solid #999;
+                                margin: 0px 10px;
+                            }
+
+                            .resume2 .image-container
+                            {
+                                text-align: center;
+                            }
+
+                            .resume2 .photo {
+                                width: 150px;
+                                height: 150px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                display: inline-block;
+                            }
+
+                            .resume2 h1 {
+                                color: #6554AF;
+                                font-size: 40px;
+                                margin-bottom: 10px;
+                                font-weight: 700;
+                                line-height: 1.5;
+                                margin-top: 10px;
+                                font-family: 'Amatic SC', cursive;
+                            }
+
+                            .resume2 p {
+                                color:#000000;
+                                margin-bottom: 5px;
+                                font-family: 'Signika', sans-serif;
+                            }
+
+                            .resume2 span {
+                                color:#000000;
+                                margin-bottom: 5px;
+                                font-family: 'Signika', sans-serif;
+                            }
+
+                            .resume2 .text-purple {
+                                color: #9575DE;
+                            }
+
+                            .resume2 .text-underlined {
+                                text-decoration: underline;
+                            }
+
+                            .resume2 .section-title {
+                                color:#6554AF;
+                                font-weight: bold;
+                                margin-bottom: 10px;
+                                font-size: 30px;
+                                text-align: left;
+                            }
+
+                            .resume2 .section-content {
+                                margin-left: 20px;
+                                text-align: left;
+                            }
+
+                        </style>
+                    </head>
+                    <body>
+                        <div class="resume2-all-container">
+                            <div class="resume2 ml-[20%]">
+                                <div class="resume2-container">
+                                    <div class="header">
+                                        <div class="image-container">
+                                            {{#if ImageUrl}}
+                                                <img class="photo"
+                                                    src={{ImageUrl}}
+                                                    alt={{FullName}} />  
+                                            {{/if}}  
+                                        </div>
+                                        <h1 class="content-title">{{FullName}}</h1>
+                                        <div class="contact-section">
+                                            <span>Email: </span>
+                                            <span class="text-purple">{{Contacts.Email}}</span>
+                                            <span class="separator"></span>
+                                            <span>Phone Number: </span>
+                                            <span class="text-purple">{{Contacts.PhoneNumber}}</span>
+                                            <span class="separator"></span>
+                                            <span>Address: </span>
+                                            <span class="text-purple">{{Contacts.Address}}</span>
+                                        </div>
+                                        <div class="about-me">
+                                            <p class="text-underlined">{{Summary}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="experience-section">
+                                        <h1 class="section-title">
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" fill="#6554af" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                                <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z"/>
+                                            </svg>
+                                            Working Experience
+                                        </h1>
+                                        {{#each Experience}}
+                                            <div class="section-content">
+                                                <p>Company: <span class="text-purple">{{this.CompanyName}}</span></p>
+                                                <p>Position: <span class="text-purple">{{this.Position}}</span></p>
+                                                {{#if this.EndDate}}
+                                                    <p>
+                                                        Start Date: <span class="text-purple">{{this.StartDate}}</span>
+                                                    </p>
+                                                    <p>
+                                                        End Date: <span class="text-purple">{{this.EndDate}}</span>
+                                                    </p>
+                                                {{else}}
+                                                    <p>
+                                                    Start Date: <span class="text-purple">{{this.StartDate}}</span>
+                                                    </p>
+                                                {{/if}}
+                                                <p style="margin-bottom: 20px">Description: <span class="text-purple">{{this.Description}}</span></p>
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                    <div class="education-section">
+                                        <h1 class="section-title">
+                                            <svg style="margin-left: 0.75rem; margin-right: 0.75rem;" fill="#6554af" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                                <path d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z"/>
+                                            </svg>
+                                            Education
+                                        </h1>
+                                        {{#each Education}}
+                                            <div class="section-content">
+                                                <p>Institute: <span class="text-purple">{{this.SchoolName}}</span></p>
+                                                <p>Degree: <span class="text-purple">{{this.Degree}}</span></p>
+                                                <p>Field of Study: <span class="text-purple">{{this.FieldOfStudy}}</span></p>
+                                                <p>Description: <span class="text-purple">{{this.Description}}</span></p>
+                                                {{#if this.EndDate}}
+                                                    <p>
+                                                        Start Date: <span class="text-purple">{{this.StartDate}}</span>
+                                                    </p>
+                                                    <p style="margin-bottom: 20px">
+                                                        End Date: <span class="text-purple">{{this.EndDate}}</span>
+                                                    </p>
+                                                {{else}}
+                                                    <p style="margin-bottom: 20px">
+                                                    Start Date: <span class="text-purple">{{this.StartDate}}</span>
+                                                    </p>
+                                                {{/if}}
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </body>
                 </html>
                 """,
             },
