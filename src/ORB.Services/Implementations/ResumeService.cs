@@ -2,6 +2,7 @@
 // Copyright (c) ORB. All rights reserved.
 // </copyright>
 
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HandlebarsDotNet;
@@ -12,6 +13,8 @@ using ORB.Services.Contracts;
 using ORB.Shared.Models.Resume;
 using Syncfusion.Drawing;
 using Syncfusion.HtmlConverter;
+
+[assembly: InternalsVisibleToAttribute("ORB.Services.Test")]
 
 namespace ORB.Services.Implementations;
 
