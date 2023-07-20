@@ -45,6 +45,8 @@ internal class ResumeService : IResumeService
         resume.User = null;
         resume.PersonalInfoId = personaInfoId;
         resume.UserId = userId;
+        var creationTime = resume.CreationTime;
+        resume.LastModified = creationTime;
 
         await this.context.Resumes.AddAsync(resume);
 
