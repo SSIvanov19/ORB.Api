@@ -3,7 +3,7 @@
 
 
 ## 💻 About
-<p align="left">Resumify aims to help job seekers by allowing them to concentrate on the quality of the information entered on the resume, and not so much on the style and design choices. The sharing option further facilitates users by enabling them to send their resumes to a large number of employers.</p>
+<p align="left"><b>Resumify</b> aims to help job seekers by allowing them to concentrate on the quality of the information entered on the resume, and not so much on the style and design choices. The sharing option further facilitates users by enabling them to send their resumes to a large number of employers.</p>
 
 ## 🗂️ Tech Stack:
 ### <h2>Used code editors for the project's realisation:</h2>
@@ -33,7 +33,7 @@ We have also used technologies like **Entity Framework Core and MSSQL**
 - [**Resumify Documentation**](https://docs.resumify.tech/)
 
 ## 📥 Installation & Set Up
-<p> To install our project on your machine you just need to clone it. This can be done by following these steps! </p>
+<p> To <b>install</b> our project on your machine you just need to <b>clone it</b>. This can be done by following these steps! </p>
 
 <hr>
 
