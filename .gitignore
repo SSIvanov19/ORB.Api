@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Application setting and secrets
 appsettings.json
+
+# Doxygen generated stuff
+docs
