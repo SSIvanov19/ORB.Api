@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ORB.Data", "ORB.Data\ORB.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ORB.Services.Test", "ORB.Services.Test\ORB.Services.Test.csproj", "{AE7136A2-A3BB-4561-A877-337ECEBD200A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORB.Shared", "ORB.Shared\ORB.Shared.csproj", "{E633EA7C-EBAC-413C-BC83-E32D5F772C66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ORB.Shared", "ORB.Shared\ORB.Shared.csproj", "{E633EA7C-EBAC-413C-BC83-E32D5F772C66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

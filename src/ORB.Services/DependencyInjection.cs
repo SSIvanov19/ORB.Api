@@ -9,7 +9,7 @@ using ORB.Services.Implementations;
 namespace ORB.Services;
 
 /// <summary>
-/// Dependency Injection.
+/// Static class for dependency injection.
 /// </summary>
 public static class DependencyInjection
 {
@@ -24,6 +24,12 @@ public static class DependencyInjection
             .AddScoped<IAuthService, AuthService>()
             .AddScoped<ITokenService, TokenService>()
             .AddScoped<IUserService, UserService>()
-            .AddScoped<IEmailService, EmailService>();
+            .AddScoped<IEmailService, EmailService>()
+            .AddScoped<IResumeService, ResumeService>()
+            .AddScoped<IPersonalInfoService, PersonalInfoService>()
+            .AddScoped<ITemplateService, TemplateService>()
+            .AddScoped<IEducationService, EducationService>()
+            .AddScoped<IWorkExperienceService, WorkExperienceService>()
+            .AddScoped<IFileService, FileService>();
     }
 }

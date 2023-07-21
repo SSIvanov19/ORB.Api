@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using ORB.Data.Data;
 using ORB.Data.Models.Auth;
 using ORB.Services;
+using ORB.WebHost.Helpers;
 using ORB.WebHost.Models;
 using ORB.WebHost.SwaggerConfiguration;
 
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
    {
        o.MigrationsAssembly(typeof(Program).Assembly.FullName);
        o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+       o.UseDateOnlyTimeOnly();
    }));
 
 // For Identity
@@ -38,7 +40,7 @@ builder.Services
     {
         conf.ClearProviders();
 
-        // conf.AddSeq(configuration.GetSection("Seq"));
+        conf.AddSeq(configuration.GetSection("Seq"));
         conf.AddConsole();
     });
 
@@ -67,7 +69,8 @@ builder.Services
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
-        builder.WithOrigins("https://localhost:5173", "http://localhost:5173")
+        builder
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -83,6 +86,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(configuration["Syncfusion:LicenseKey"]);
+
+await app.InitAppAsync();
 app.UseSwagger();
 
 // Configure the HTTP request pipeline.
