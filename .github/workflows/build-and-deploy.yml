@@ -5,7 +5,7 @@ on:
     - main
 env:
   AZURE_WEBAPP_NAME: resumify
-  AZURE_WEBAPP_PACKAGE_PATH: src\ORB.WebHost\publish
+  AZURE_WEBAPP_PACKAGE_PATH: src\ORB.WebHost\bin\Release\net7.0\
   AZURE_APIM_RESOURCE_PATH: /
   AZURE_APIM_RESOURCEGROUP: orb-resource-group
   AZURE_APIM_SERVICENAME: resumify
