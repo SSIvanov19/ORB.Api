@@ -71,6 +71,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
+    - name: Setup .Net Core for Swagger
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
     - name: Setup SwashBuckle .NET Core
       uses: actions/setup-dotnet@v1
       with:
