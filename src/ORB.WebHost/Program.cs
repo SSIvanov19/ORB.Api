@@ -88,7 +88,7 @@ var app = builder.Build();
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(configuration["Syncfusion:LicenseKey"]);
 
-await app.InitAppAsync();
+//await app.InitAppAsync();
 app.UseSwagger();
 
 // Configure the HTTP request pipeline.
