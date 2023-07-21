@@ -56,7 +56,7 @@ download all the needed packages via
 <pre>dotnet restore</pre> 
 and then run 
 <pre>dotnet watch</pre>
-command in Terminal.</li>
+command in your favorite Terminal.</li>
 This will open the Swagger where you can explore the different endpoints of the projects.
 
 **Congratz!** 🥳 Now you can do the same thing for the **[ORB.Web](https://github.com/ipstoyanov20/ORB.Web.git)** project and you will be all set up!
