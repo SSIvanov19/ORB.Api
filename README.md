@@ -69,3 +69,6 @@ to oficially start the project where you could create, modify and share a variet
 <div align="center">
   <img src="https://github.com/ipstoyanov20/ORB.Web/assets/71072498/3644ad49-69b2-417e-8287-9e5c0c0aeab3" alt="resumify_logo" width="500">
 </div>
+
+
+<!-- Security scan triggered at 2025-09-02 00:28:34 -->
